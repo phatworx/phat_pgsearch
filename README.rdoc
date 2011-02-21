@@ -1,6 +1,106 @@
 = phat_pgsearch
 
-Description goes here.
+a plugin for postgresql tssearch support
+
+== Installation
+
+add to Gemfile
+gem "phat_pgsearch"
+
+== Configuration
+
+  PhatPgsearch.setup do |config|
+    # defaut catalog
+    # config.catalog = :english
+  end
+
+== Using
+
+=== create table columns
+  create_table :sample_headers, :force => true do |t|
+    t.string :title
+    t.tsvector :tsv
+  end
+  create_table :sample_items, :force => true do |t|
+    t.integer :sample_header_id
+    t.text :content
+    t.tsvector :tsv
+    t.tsvector :tsv_full
+  end
+  create_table :sample_comments, :force => true do |t|
+    t.integer :sample_item_id
+    t.text :comment
+    t.tsvector :tsv
+  end
+
+  add_gin_index :sample_headers, :tsv, :gin => true
+  add_gin_index :sample_items, :tsv, :gin => true
+  add_gist_index :sample_comments, :tsv, :gist => true
+
+=== define index
+
+  class SampleHeader < ActiveRecord::Base
+    has_many :sample_items
+
+    pgsearch_index :tsv do
+      field :title, :weight => :a
+    end
+
+  end
+  class SampleItem < ActiveRecord::Base
+    has_many :sample_comments
+    belongs_to :sample_header
+
+    pgsearch_index :tsv, :catalog => :english do
+      field :content
+    end
+
+    pgsearch_index :tsv_full, :catalog => :german do
+      field :title, :weight => :a
+      field :content, :weight => :b
+      field :comment_texts, :weight => :d
+    end
+
+    def title
+      sample_header.title
+    end
+
+    def comment_texts
+      sample_comments.collect{ |comment| comment.comment }.join('')
+    end
+
+  end
+
+  class SampleComment < ActiveRecord::Base
+    belongs_to :sample_item
+  end
+
+=== search
+
+  # search on field :tsv_full
+  SampleItem.pgsearch(:tsv_full, 'test test2')
+
+  # search on field :tsv with custom catalog
+  SampleItem.pgsearch(:tsv, 'test test2', :catalog => :english)
+
+  # disable auto sorting and use own select and sorting
+  SampleItem.pgsearch(:tsv_full, 'test test2', :rank => false).select("sample_items.*, #{SampleItem.pgsearch_query(:tsv_full, 'test test2')} AS rank").order(:rank) }
+
+== Requirements
+
+* Rails 3 (http://github.com/rails/rails)
+* PostgreSQL
+
+== Test environments
+
+* ruby-1.9.2 (work)
+* ruby-1.8.7 (segfault in pg)
+* ree-1.8.7 (work)
+
+== Maintainers
+
+* Team Phatworx (http://github.com/phatworx)
+* Marco Scholl (http://github.com/traxanos)
 
 == Contributing to phat_pgsearch
  
@@ -14,6 +114,5 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2011 Marco Scholl. See LICENSE.txt for
-further details.
+Copyright (c) 2011 Marco Scholl. See LICENSE.txt for further details.
 

@@ -28,14 +28,14 @@ module PhatPgsearch
       def pgsearch(*args)
         options = args.extract_options!
         normalization = options.delete(:normalization) || 32
-        rank = options.delete(:rank) || true
+        rank = options.delete(:rank)
 
         scope = self
 
-        search_query = pgsearch_query(*args, options)
+        search_query = pgsearch_query(args.first, args.second, options)
 
-        if rank
-          scope = scope.select("#{self.connection.quote_table_name(self.table_name)}.*, ts_rank_cd(#{self.connection.quote_column_name(args.first)}, #{search_query}, #{normalization.to_i}) AS rank").order(:rank)
+        if rank.nil? or rank == true
+          scope = scope.select("#{self.connection.quote_table_name(self.table_name)}.*, ts_rank_cd(#{self.connection.quote_column_name(args.first)}, #{search_query}, #{normalization.to_i}) AS rank")
         end
 
         scope.where("#{self.connection.quote_table_name(self.table_name)}.#{self.connection.quote_column_name(args.first)} @@ #{search_query}")

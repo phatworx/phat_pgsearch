@@ -49,16 +49,32 @@ describe PhatPgsearch::ActiveRecord do
       describe "#pgsearch :tsv, 'kommentar'" do
         before { @pgsearch = SampleItem.pgsearch(:tsv, 'kommentar') }
         subject { @pgsearch }
-        it "shoud do something" do
-
+        it "should do something" do
+          subject.to_a
         end
 
       end
       describe "#pgsearch :tsv_full, 'kommentar'" do
         before { @pgsearch = SampleItem.pgsearch(:tsv_full, 'kommentar') }
         subject { @pgsearch }
-        it "shoud do something" do
-          
+        it "should do something" do
+          subject.to_a
+        end
+
+      end
+      describe "#pgsearch :tsv_full, 'kommentar', :catalog => :german" do
+        before { @pgsearch = SampleItem.pgsearch(:tsv_full, 'kommentar', :catalog => :german) }
+        subject { @pgsearch }
+        it "should do something" do
+          subject.to_a
+        end
+
+      end
+      describe "#pgsearch :tsv_full, 'kommentar', :rank => false" do
+        before { @pgsearch = SampleItem.pgsearch(:tsv_full, 'kommentar', :rank => false).select("sample_items.*, #{SampleItem.pgsearch_query(:tsv_full, 'kommentar')} AS rank").order(:rank) }
+        subject { @pgsearch }
+        it "should do something" do
+          subject.to_a
         end
 
       end
