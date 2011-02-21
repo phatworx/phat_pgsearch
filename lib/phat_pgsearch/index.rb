@@ -5,7 +5,7 @@ module PhatPgsearch
     # field :test, :weight => :a
     def field(*args)
       options = args.extract_options!
-
+      
     end
   end
 end
