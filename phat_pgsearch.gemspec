@@ -36,7 +36,7 @@ Gem::Specification.new do |s|
     "spec/spec_helper.rb",
     "spec/support/active_record.rb"
   ]
-  s.homepage = %q{http://github.com/traxanos/phat_pgsearch}
+  s.homepage = %q{http://github.com/phatserver/phat_pgsearch}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.5.2}
