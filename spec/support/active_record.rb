@@ -45,9 +45,7 @@ class SampleItem < ActiveRecord::Base
   has_many :sample_comments
   belongs_to :sample_header
 
-
-
-  pgsearch_index :tsv, :catalog => :german do
+  pgsearch_index :tsv, :catalog => :english do
     field :content
   end
 

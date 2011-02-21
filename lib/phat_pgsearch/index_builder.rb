@@ -12,7 +12,6 @@ module PhatPgsearch
     protected
 
     def build_index
-      p definition.index_field
       partials = []
       definition.fields.each do |field_definition|
         field = field_definition.first
