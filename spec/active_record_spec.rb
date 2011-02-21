@@ -49,16 +49,16 @@ describe PhatPgsearch::ActiveRecord do
       describe "#pgsearch :tsv, 'kommentar'" do
         before { @pgsearch = SampleItem.pgsearch(:tsv, 'kommentar') }
         subject { @pgsearch }
-        it "ddd" do
-          p @pgsearch
+        it "shoud do something" do
+
         end
 
       end
       describe "#pgsearch :tsv_full, 'kommentar'" do
         before { @pgsearch = SampleItem.pgsearch(:tsv_full, 'kommentar') }
         subject { @pgsearch }
-        it "ddd" do
-          p @pgsearch
+        it "shoud do something" do
+          
         end
 
       end

@@ -1,4 +1,4 @@
-ActiveRecord::Base.logger = Logger.new(STDOUT)
+#ActiveRecord::Base.logger = Logger.new(STDOUT)
 ActiveRecord::Base.establish_connection(
   {
     :adapter => 'postgresql',
@@ -36,7 +36,7 @@ end
 class SampleHeader < ActiveRecord::Base
   has_many :sample_items
 
-  pgsearch_index :tsv, :catalog => :german do
+  pgsearch_index :tsv do
     field :title, :weight => :a
   end
 
