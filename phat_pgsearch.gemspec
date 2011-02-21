@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{phat_pgsearch}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Marco Scholl"]
@@ -36,7 +36,7 @@ Gem::Specification.new do |s|
     "spec/spec_helper.rb",
     "spec/support/active_record.rb"
   ]
-  s.homepage = %q{http://github.com/phatserver/phat_pgsearch}
+  s.homepage = %q{http://github.com/traxanos/phat_pgsearch}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.5.2}
