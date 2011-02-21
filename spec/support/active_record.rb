@@ -1,25 +1,34 @@
-ActiveRecord::Base.establish_connection({
-  :adapter => 'postgresql',
-  :database => 'phat_pgsearch',
-  :encoding => 'utf-8',
-  :password =>  'devel',
-  :host => 'localhost',
-  :username => 'pgadmin',
-  :min_messages => 'WARNING'
-})
+ActiveRecord::Base.establish_connection(
+  {
+    :adapter => 'postgresql',
+    :database => 'phat_pgsearch',
+    :encoding => 'utf-8',
+    :password => 'devel',
+    :host => 'localhost',
+    :username => 'pgadmin',
+    :min_messages => 'WARNING'
+  }
+)
 
 ActiveRecord::Schema.define(:version => 0) do
   create_table :sample_headers, :force => true do |t|
-    t.column :title, :string
+    t.string :title
+    t.tsvector :tsv
   end
   create_table :sample_items, :force => true do |t|
-    t.column   :sample_header_id, :integer
-    t.column :content, :text
+    t.integer :sample_header_id
+    t.text :content
+    t.tsvector :tsv
   end
   create_table :sample_comments, :force => true do |t|
-    t.column :sample_item_id, :integer
-    t.column :comment, :text
+    t.integer :sample_item_id
+    t.text :comment
+    t.tsvector :tsv
   end
+
+  add_gin_index :sample_headers, :tsv, :gin => true
+  add_gin_index :sample_items, :tsv, :gin => true
+  add_gin_index :sample_comments, :tsv, :gist => true
 end
 
 class SampleHeader < ActiveRecord::Base

@@ -1,5 +1,32 @@
 module PhatPgsearch
-  module Postgresql
+  module PostgreSQL
 
+    module SchemaStatements
+      def add_gin_index(table_name, column_name, options = {})
+        index_name = index_name(table_name, :column => column_name)
+        index_name = options[:name].to_s if options.key?(:name)
+        execute "CREATE INDEX #{quote_column_name(index_name)} ON #{quote_table_name(table_name)} USING gin(#{quote_column_name(column_name)})"
+      end
+
+      def add_gist_index(table_name, column_name, options = {})
+        index_name = index_name(table_name, :column => column_name)
+        index_name = options[:name].to_s if options.key?(:name)
+        execute "CREATE INDEX #{quote_column_name(index_name)} ON #{quote_table_name(table_name)} USING gist(#{quote_column_name(column_name)})"
+      end
+    end
+
+    module TableDefinition
+      def included
+        # add data type
+        ::ActiveRecord::ConnectionAdapters::PostgreSQLAdapter::NATIVE_DATABASE_TYPES[:tsvector] = {:name => "tsvector"}
+      end
+
+      # add tsvector column
+      def tsvector(*args)
+        options = args.extract_options!
+        column_names = args
+        column_names.each { |name| column(name, :tsvector, options) }
+      end
+    end
   end
 end

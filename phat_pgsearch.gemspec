@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
     "lib/phat_pgsearch/active_record.rb",
     "lib/phat_pgsearch/index.rb",
     "lib/phat_pgsearch/postgresql.rb",
+    "phat_pgsearch.gemspec",
     "spec/active_record_spec.rb",
     "spec/phat_pgsearch_spec.rb",
     "spec/spec_helper.rb",
