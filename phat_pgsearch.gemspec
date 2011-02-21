@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{phat_pgsearch}
-  s.version = "0.0.0"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Marco Scholl"]
-  s.date = %q{2011-02-21}
-  s.description = %q{a plugin for postgresql tssearch support}
+  s.date = %q{2011-02-22}
+  s.description = %q{a plugin for tssearch support from postgresql}
   s.email = %q{develop@marco-scholl.de}
   s.extra_rdoc_files = [
     "LICENSE.txt",
@@ -27,7 +27,8 @@ Gem::Specification.new do |s|
     "VERSION",
     "lib/phat_pgsearch.rb",
     "lib/phat_pgsearch/active_record.rb",
-    "lib/phat_pgsearch/index.rb",
+    "lib/phat_pgsearch/index_builder.rb",
+    "lib/phat_pgsearch/index_definition.rb",
     "lib/phat_pgsearch/postgresql.rb",
     "phat_pgsearch.gemspec",
     "spec/active_record_spec.rb",
@@ -35,11 +36,11 @@ Gem::Specification.new do |s|
     "spec/spec_helper.rb",
     "spec/support/active_record.rb"
   ]
-  s.homepage = %q{http://github.com/phatworx/phat_pgsearch}
+  s.homepage = %q{http://github.com/traxanos/phat_pgsearch}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.5.0}
-  s.summary = %q{a plugin for postgresql tssearch support}
+  s.rubygems_version = %q{1.5.2}
+  s.summary = %q{a postgresql based search plugin}
   s.test_files = [
     "spec/active_record_spec.rb",
     "spec/phat_pgsearch_spec.rb",
