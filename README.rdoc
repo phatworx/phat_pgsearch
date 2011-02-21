@@ -5,7 +5,7 @@ a plugin for postgresql tssearch support
 == Installation
 
 add to Gemfile
-gem "phat_pgsearch"
+  gem "phat_pgsearch"
 
 == Configuration
 
