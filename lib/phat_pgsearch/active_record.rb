@@ -6,30 +6,34 @@ module PhatPgsearch
     end
 
     module ClassMethods #:nodoc:
-      def phat_pgsearch
-        include InstanceMethods
-        extend SingletonMethods
+
+      def pgsearch_index(*args, &block)
+        unless @pgsearch_definitions.is_a? Array
+          include InstanceMethods
+          extend SingletonMethods
+          @pgsearch_definitions = []
+          before_save :build_pgsearch_index
+        end
+        @pgsearch_definitions << IndexDefinition.new(*args, &block)
       end
+
     end
 
     module SingletonMethods #:nodoc:
-      # search method
-      def pgsearch(*args)
-        
+
+      def pgsearch_definitions
+        @pgsearch_definitions
       end
 
-      # pgindex :tsv, :catalog => :german do
-      #   field :test1
-      #   field :test2, :weight => :a
-      # end
-      def pgindex(*args, &block)
-        index = PhatPgsearch::Index.new
-        yield(index)
-        p index.inspect
-      end
     end
 
     module InstanceMethods #:nodoc:
+
+      def build_pgsearch_index
+        self.class.pgsearch_definitions.each do |index_definition|
+          IndexBuilder.new(self, index_definition)
+        end
+      end
 
     end
   end

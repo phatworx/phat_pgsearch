@@ -2,6 +2,7 @@ module PhatPgsearch
   module PostgreSQL
 
     module SchemaStatements
+
       def add_gin_index(table_name, column_name, options = {})
         index_name = index_name(table_name, :column => column_name)
         index_name = options[:name].to_s if options.key?(:name)
@@ -15,8 +16,18 @@ module PhatPgsearch
       end
     end
 
+    module PostgreSQLColumn
+      def simplified_type(field_type)
+        if field_type == 'tsvector'
+          :string
+        else
+          super(field_type)
+        end
+      end
+    end
+
     module TableDefinition
-      def included
+      def self.included(base)
         # add data type
         ::ActiveRecord::ConnectionAdapters::PostgreSQLAdapter::NATIVE_DATABASE_TYPES[:tsvector] = {:name => "tsvector"}
       end
