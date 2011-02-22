@@ -79,11 +79,16 @@ module PhatPgsearch
         "plainto_tsquery(#{self.sanitize(catalog)}, #{self.sanitize(args.second)})"
       end
 
+      # rebuild complete index for model
+      def rebuild_pgindex!
+        self.all.each { |model| model.rebuild_pgindex! }
+      end
+
     end
 
     module InstanceMethods #:nodoc:
 
-
+      # rebuild pgindex für object without update timestamps
       def rebuild_pgindex!
         last_state = self.class.record_timestamps
         self.class.record_timestamps = false
