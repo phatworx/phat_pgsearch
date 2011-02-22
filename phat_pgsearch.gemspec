@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{phat_pgsearch}
-  s.version = "0.1.2"
+  s.version = "0.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Marco Scholl"]
@@ -39,7 +39,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/phatworx/phat_pgsearch}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.5.2}
+  s.rubygems_version = %q{1.5.0}
   s.summary = %q{a postgresql based search plugin}
   s.test_files = [
     "spec/active_record_spec.rb",
