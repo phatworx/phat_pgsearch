@@ -83,6 +83,17 @@ module PhatPgsearch
 
     module InstanceMethods #:nodoc:
 
+
+      def rebuild_pgindex!
+        last_state = self.class.record_timestamps
+        self.class.record_timestamps = false
+        self.build_pgsearch_index
+        self.save!
+        self.class.record_timestamps = last_state
+      end
+
+      private
+
       def build_pgsearch_index
         self.class.pgsearch_definitions.each_pair do |index_field, index_definition|
           IndexBuilder.new(self, index_definition)
