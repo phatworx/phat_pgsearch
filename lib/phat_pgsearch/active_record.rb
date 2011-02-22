@@ -34,20 +34,47 @@ module PhatPgsearch
 
         search_query = pgsearch_query(args.first, args.second, options)
 
-        if rank.nil? or rank == true
-          scope = scope.select("#{self.connection.quote_table_name(self.table_name)}.*, ts_rank_cd(#{self.connection.quote_column_name(args.first)}, #{search_query}, #{normalization.to_i}) AS rank")
+        if args.first.is_a? Symbol or args.first.to_s.split('.', 2) == 1
+          vector_column = "#{self.connection.quote_table_name(self.table_name)}.#{self.connection.quote_column_name(args.first.to_s)}"
+        else
+          vector_column = args.first.split('.', 2).collect{ |f| self.connection.quote_column_name(f) }.join('.')
         end
 
-        scope.where("#{self.connection.quote_table_name(self.table_name)}.#{self.connection.quote_column_name(args.first)} @@ #{search_query}")
+        if rank.nil? or rank == true
+          scope = scope.select("#{self.connection.quote_table_name(self.table_name)}.*, ts_rank_cd(#{vector_column}, #{search_query}, #{normalization.to_i}) AS rank")
+        end
+
+        scope.where("#{vector_column} @@ #{search_query}")
       end
 
       def pgsearch_query(*args)
         options = args.extract_options!
-        raise ArgumentError, "invalid field given" unless pgsearch_definitions.include? args.first.to_sym
-        raise ArgumentError, "invalid query" if not args.second or not args.second.is_a? String
+        raise ArgumentError, "invalid field given" if args.first.nil? or not (args.first.is_a? String or args.first.is_a? Symbol)
+        raise ArgumentError, "invalid query given" if args.second.nil? or not (args.second.is_a? String)
 
-        definition = pgsearch_definitions[args.first.to_sym]
-        catalog = options[:catalog] || definition.catalog
+        field = args.first.to_s.split(".", 2)
+
+        table_class = self
+
+        if field.count == 2
+          begin
+            table_class = field.first.classify.constantize
+          rescue
+            p field.first.classify
+            raise ArgumentError, "unknown table in field given"
+          end
+        end
+
+        raise ArgumentError, "table has no index defined" unless table_class.respond_to? :pgsearch_definitions
+        raise ArgumentError, "table has no index defined for '#{field.last.to_sym}'" if table_class.pgsearch_definitions[field.last.to_sym].nil?
+
+
+        definition = table_class.pgsearch_definitions[field.last.to_sym]
+        if definition
+          catalog = options[:catalog] || definition.catalog
+        else
+          catalog = options[:catalog] || definition.catalog
+        end
 
         "plainto_tsquery(#{self.sanitize(catalog)}, #{self.sanitize(args.second)})"
       end

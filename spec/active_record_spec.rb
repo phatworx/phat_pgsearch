@@ -45,6 +45,22 @@ describe PhatPgsearch::ActiveRecord do
       @sample_header.save
     end
 
+    describe "#pgsearch with table-field in string" do
+      before { @pgsearch = SampleItem.pgsearch("sample_items.tsv", 'kommentar') }
+      subject { @pgsearch }
+      it "should do something" do
+        subject.to_a
+      end
+    end
+
+    describe "#pgsearch with field in string" do
+      before { @pgsearch = SampleItem.pgsearch("tsv", 'kommentar') }
+      subject { @pgsearch }
+      it "should do something" do
+        subject.to_a
+      end
+    end
+
     describe SampleItem do
       describe "#pgsearch :tsv, 'kommentar'" do
         before { @pgsearch = SampleItem.pgsearch(:tsv, 'kommentar') }
