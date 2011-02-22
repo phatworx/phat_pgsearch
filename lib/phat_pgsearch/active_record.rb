@@ -92,7 +92,7 @@ module PhatPgsearch
         self.class.record_timestamps = last_state
       end
 
-      private
+      protected
 
       def build_pgsearch_index
         self.class.pgsearch_definitions.each_pair do |index_field, index_definition|
