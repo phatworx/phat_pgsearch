@@ -85,7 +85,7 @@ add to Gemfile
 
   # disable auto sorting and use own select and sorting
   SampleItem.pgsearch(:tsv_full, 'test test2', :rank => false).
-    select("sample_items.*, #{SampleItem.pgsearch_query(:tsv_full, 'test test2')} AS rank").
+    select("sample_items.*, ts_rank_cd('german', #{SampleItem.pgsearch_query(:tsv_full, 'test test2')}, 32) AS rank").
     order(:rank)
 
 == Requirements
