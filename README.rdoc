@@ -93,6 +93,11 @@ add to Gemfile
 * Rails 3 (http://github.com/rails/rails)
 * PostgreSQL
 
+
+ = Todo / Problem
+
+* Missing support for SchemaDumper (at the moment use config.active_record.schema_format = :sql)
+
 == Test environments
 
 * ruby-1.9.2 (work)

@@ -1,5 +1,18 @@
 module PhatPgsearch
   module PostgreSQL
+    class IndexDefinition < Struct.new(:table, :name, :type, :column) #:nodoc:
+    end
+
+    module SchemaDumper
+      def self.included(base)
+        
+      end
+
+      def indexes
+        
+        
+      end
+    end
 
     module SchemaStatements
 
@@ -17,6 +30,10 @@ module PhatPgsearch
     end
 
     module PostgreSQLColumn
+      def pgsearch_index(table)
+        
+      end
+
       def simplified_type(field_type)
         if field_type == 'tsvector'
           :string

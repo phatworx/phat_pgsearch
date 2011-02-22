@@ -21,6 +21,7 @@ module PhatPgsearch
       ::ActiveRecord::ConnectionAdapters::TableDefinition.send(:include, PostgreSQL::TableDefinition)
       ::ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.send(:include, PostgreSQL::SchemaStatements)
       ::ActiveRecord::ConnectionAdapters::PostgreSQLColumn.send(:include, PostgreSQL::PostgreSQLColumn)
+      ::ActiveRecord::SchemaDumper.send(:include, PostgreSQL::SchemaDumper)
       ::ActiveRecord::Base.send(:include, ActiveRecord)
     end
   end
