@@ -1,6 +1,7 @@
 require 'active_support/all'
 require 'active_record'
 require 'active_record/connection_adapters/postgresql_adapter'
+
 module PhatPgsearch
   autoload :IndexDefinition, 'phat_pgsearch/index_definition'
   autoload :IndexBuilder, 'phat_pgsearch/index_builder'
@@ -18,6 +19,7 @@ module PhatPgsearch
     end
 
     def init
+      require 'phat_pgsearch/railties'
       ::ActiveRecord::ConnectionAdapters::TableDefinition.send(:include, PostgreSQL::TableDefinition)
       ::ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.send(:include, PostgreSQL::SchemaStatements)
       ::ActiveRecord::ConnectionAdapters::PostgreSQLColumn.send(:include, PostgreSQL::PostgreSQLColumn)
