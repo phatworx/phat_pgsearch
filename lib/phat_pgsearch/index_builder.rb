@@ -20,7 +20,7 @@ module PhatPgsearch
         if not field_options[:weight].nil? and [:a, :b, :c, :d].include? field_options[:weight].to_sym
           partial = "setweight(to_tsvector(#{base.class.sanitize(definition.catalog)}, #{base.class.sanitize(field_content)}), '#{field_options[:weight].to_s.upcase}')"
         else
-          partial = "to_tsvector(#{base.class.sanitize(definition.catalog)}, #{base.class.sanitize(field_content)})"
+          partial = "to_tsvector(#{base.class.sanitize(definition.catalog)}, #{base.class.sanitize(field_content.to_s)})"
         end
         partials << partial
       end
