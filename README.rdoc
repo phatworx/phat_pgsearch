@@ -10,7 +10,7 @@ add to Gemfile
 == Configuration
 
   PhatPgsearch.setup do |config|
-    # defaut catalog
+    # default catalog
     # config.catalog = :english
   end
 
