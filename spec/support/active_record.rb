@@ -60,7 +60,7 @@ class SampleItem < ActiveRecord::Base
   end
 
   def comment_texts
-    sample_comments.collect{ |comment| comment.comment }.join('')
+    sample_comments.collect{ |comment| comment.comment }.join(' ')
   end
 
 end
