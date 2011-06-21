@@ -49,6 +49,7 @@ module PhatPgsearch
 
       def pgsearch_query(*args)
         options = args.extract_options!
+	plain = options.delete(:plain) || true
         raise ArgumentError, "invalid field given" if args.first.nil? or not (args.first.is_a? String or args.first.is_a? Symbol)
         raise ArgumentError, "invalid query given" if args.second.nil? or not (args.second.is_a? String)
 
@@ -60,7 +61,6 @@ module PhatPgsearch
           begin
             table_class = field.first.classify.constantize
           rescue
-            p field.first.classify
             raise ArgumentError, "unknown table in field given"
           end
         end
@@ -76,7 +76,7 @@ module PhatPgsearch
           catalog = options[:catalog] || definition.catalog
         end
 
-        "plainto_tsquery(#{self.sanitize(catalog)}, #{self.sanitize(args.second)})"
+        "#{plain ? 'plain' : ''}to_tsquery(#{self.sanitize(catalog)}, #{self.sanitize(args.second)})"
       end
 
       # rebuild complete index for model
