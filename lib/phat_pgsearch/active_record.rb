@@ -49,7 +49,8 @@ module PhatPgsearch
 
       def pgsearch_query(*args)
         options = args.extract_options!
-        plain = options.delete(:plain) || true
+        plain = options.delete(:plain)
+        plain = true if plain.nil?
         raise ArgumentError, "invalid field given" if args.first.nil? or not (args.first.is_a? String or args.first.is_a? Symbol)
         raise ArgumentError, "invalid query given" if args.second.nil? or not (args.second.is_a? String)
 
