@@ -96,8 +96,6 @@ add to Gemfile
 
 * ruby-2.1 (work)
 * ruby-1.9.2 (work)
-* ruby-1.8.7 (segfault in pg)
-* ree-1.8.7 (work)
 
 == Maintainers
 
