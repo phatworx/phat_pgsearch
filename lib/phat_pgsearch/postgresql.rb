@@ -5,23 +5,27 @@ module PhatPgsearch
 
     module SchemaDumper
       def self.included(base)
-        
+
       end
 
       def indexes
-        
-        
+
+
       end
     end
 
     module SchemaStatements
 
+      # deprecated
+      # use: add_index :sample_headers, :tsv, using: :gin
       def add_gin_index(table_name, column_name, options = {})
         index_name = index_name(table_name, :column => column_name)
         index_name = options[:name].to_s if options.key?(:name)
         execute "CREATE INDEX #{quote_column_name(index_name)} ON #{quote_table_name(table_name)} USING gin(#{quote_column_name(column_name)})"
       end
 
+      # deprecated
+      # use: add_index :sample_headers, :tsv, using: :gist
       def add_gist_index(table_name, column_name, options = {})
         index_name = index_name(table_name, :column => column_name)
         index_name = options[:name].to_s if options.key?(:name)
@@ -31,7 +35,7 @@ module PhatPgsearch
 
     module PostgreSQLColumn
       def pgsearch_index(table)
-        
+
       end
 
       def simplified_type(field_type)
